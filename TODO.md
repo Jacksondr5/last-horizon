@@ -1,0 +1,7 @@
+- [ ] Send custom events in the flow
+- [ ] Identify user to analytics
+- [ ] Add banking dashboard
+- [x] Add posthog
+- [ ] Add mixpanel
+- [ ] Add logrocket
+- [ ] Add amplitude
