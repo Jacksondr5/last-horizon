@@ -1,0 +1,3 @@
+- Set up all the Shadcn components
+- Sent claude the pictures of various pages and asked him to adjust the components to match the design, one at a time.
+- Sent him a snapshot of a page to get him to make it
