@@ -51,6 +51,7 @@
     "zod": "^3.23.3"
   },
   "devDependencies": {
+    "@amplitude/analytics-types": "^2.8.4",
     "@types/eslint": "^8.56.10",
     "@types/mixpanel-browser": "^2.51.0",
     "@types/node": "^22.13.1",
