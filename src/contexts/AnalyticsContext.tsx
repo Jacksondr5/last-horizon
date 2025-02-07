@@ -18,7 +18,13 @@ interface AnalyticsContextType {
     eventName: string,
     properties?: Record<string, unknown>,
   ) => void;
-  identifyUser: (userId: string) => void;
+  identifyUser: (userId: string, properties: UserProperties) => void;
+}
+
+interface UserProperties {
+  email: string;
+  name: string;
+  id: string;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType | undefined>(
@@ -64,12 +70,19 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
-  const identifyUser = useCallback((userId: string) => {
-    posthog.identify(userId);
-    mixpanel.identify(userId);
-    LogRocket.identify(userId);
-    amplitude.setUserId(userId);
-  }, []);
+  const identifyUser = useCallback(
+    (userId: string, properties: UserProperties) => {
+      posthog.identify(userId, properties);
+      mixpanel.identify(userId);
+      mixpanel.people.set_once(properties);
+      LogRocket.identify(userId, {
+        name: properties.name,
+        email: properties.email,
+      });
+      amplitude.setUserId(userId);
+    },
+    [],
+  );
 
   const unidentifyUser = useCallback(() => {
     posthog.reset();
@@ -80,7 +93,11 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (user) {
-      identifyUser(user.id);
+      identifyUser(user.primaryEmailAddress?.emailAddress ?? user.id, {
+        email: user.primaryEmailAddress?.emailAddress ?? "",
+        name: user.fullName ?? "",
+        id: user.id,
+      });
     } else {
       unidentifyUser();
     }
