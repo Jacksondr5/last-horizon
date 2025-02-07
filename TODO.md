@@ -1,0 +1,8 @@
+- [ ] Send custom events in the flow
+- [ ] Identify user to analytics
+- [ ] Add banking dashboard
+- [x] Add posthog
+- [x] Add mixpanel
+- [x] Add logrocket
+- [x] Add amplitude
+- [ ] Figure out how to redirect analytics locally
