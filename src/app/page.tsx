@@ -1,41 +1,81 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
-import { HydrateClient } from "@/trpc/server";
-
-export default async function Home() {
+export default function HomePage() {
   return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+    <div className="min-h-screen bg-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          {/* Logo */}
+          <div className="text-navy-900 mb-8 text-6xl font-bold">
+            Last<span className="text-blue-600"> Horizon</span>
+          </div>
+
+          {/* Tagline */}
+          <h1 className="text-navy-900 mb-4 text-4xl font-bold tracking-tight">
+            Banking for the rest of us
           </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
+          <p className="mb-12 text-xl text-gray-600">
+            A totally real bank that definitely won&apos;t lose your money
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="space-y-4 sm:space-x-4 sm:space-y-0">
+            <Button
+              variant="primary"
+              size="lg"
+              className="min-w-[200px]"
+              asChild
             >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
+              <Link href="/oao/welcome">Open an Account</Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="min-w-[200px]"
+              asChild
             >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
+              <Link href="/dashboard">Sign In</Link>
+            </Button>
+          </div>
+
+          {/* Feature List */}
+          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
+            <div className="rounded-lg border border-gray-200 p-6">
+              <h3 className="mb-2 text-lg font-semibold">Totally Secure</h3>
+              <p className="text-gray-600">
+                We keep your money safe using blockchain AI quantum computing
+              </p>
+            </div>
+            <div className="rounded-lg border border-gray-200 p-6">
+              <h3 className="mb-2 text-lg font-semibold">No Hidden Fees</h3>
+              <p className="text-gray-600">
+                All our fees are clearly visible in 2pt font at the bottom of
+                page 47
+              </p>
+            </div>
+            <div className="rounded-lg border border-gray-200 p-6">
+              <h3 className="mb-2 text-lg font-semibold">24/7 Support</h3>
+              <p className="text-gray-600">
+                Our AI chatbot is always happy to misunderstand your questions
+              </p>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-16 text-sm text-gray-500">
+            <p>
+              This is a demo application. Please don&apos;t try to deposit real
+              money.
+            </p>
+            <p className="mt-2 text-xs">
+              I mean, we&apos;ll take it, but we can&apos;t promise you&apos;ll
+              get it back.
+            </p>
           </div>
         </div>
-      </main>
-    </HydrateClient>
+      </div>
+    </div>
   );
 }

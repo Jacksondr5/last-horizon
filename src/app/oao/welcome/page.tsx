@@ -89,7 +89,10 @@ export default function WelcomePage() {
       {/* Location notice */}
       <p className="mb-8 text-sm text-gray-600">
         Applicant must reside within 50 miles of a{" "}
-        <Link href="#" className="underline">
+        <Link
+          href="https://letmegooglethat.com/?q=first+horizon+banking+center+near+me"
+          className="underline"
+        >
           First Horizon banking center
         </Link>
         .
