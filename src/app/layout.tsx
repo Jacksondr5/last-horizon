@@ -5,7 +5,6 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
-import { CSPostHogProvider } from "./providers";
 import { AnalyticsProvider } from "@/contexts/AnalyticsContext";
 export const metadata: Metadata = {
   title: "Last Horizon",
@@ -20,11 +19,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
-          <CSPostHogProvider>
-            <AnalyticsProvider>
-              <TRPCReactProvider>{children}</TRPCReactProvider>
-            </AnalyticsProvider>
-          </CSPostHogProvider>
+          <AnalyticsProvider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </AnalyticsProvider>
         </body>
       </html>
     </ClerkProvider>

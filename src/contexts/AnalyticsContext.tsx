@@ -1,11 +1,22 @@
 "use client";
 
-import React, { createContext, useCallback, useContext } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+} from "react";
 import { env } from "@/env";
-import { usePostHog } from "posthog-js/react";
+import posthog from "posthog-js";
+import { PostHogProvider } from "posthog-js/react";
+import mixpanel from "mixpanel-browser";
+import LogRocket from "logrocket";
+import * as amplitude from "@amplitude/analytics-browser";
+import { useUser } from "@clerk/nextjs";
 
 interface AnalyticsContextType {
   captureEvent: (eventName: string, properties?: Record<string, any>) => void;
+  identifyUser: (userId: string) => void;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType | undefined>(
@@ -13,24 +24,62 @@ const AnalyticsContext = createContext<AnalyticsContextType | undefined>(
 );
 
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
-  const posthog = usePostHog();
+  const { user } = useUser();
+  useEffect(() => {
+    posthog.init("phc_IZ7mch276EcoM2IkrasEOF1XaJBMTwJKEKSrTe72zSf", {
+      api_host: "https://us.i.posthog.com",
+      person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
+    });
+    mixpanel.init("db07f3010c7a3b4fb335f63e958770c0", {
+      persistence: "localStorage",
+      debug: true,
+      // types don't match the docs for this one, so we need to cast it to any
+      autocapture: true,
+    } as any);
+    LogRocket.init("rmdvl6/last-horizon");
+    amplitude.init("774e3c5338de61ff40858286506bd47d", { autocapture: true });
+  }, []);
+
   const captureEvent = useCallback(
     (eventName: string, properties?: Record<string, any>) => {
       if (typeof window === "undefined") return;
 
-      // Log to console in development
-      if (env.NODE_ENV === "development") {
-        console.log("Analytics Event:", eventName, properties);
-      }
-
       posthog.capture(eventName, properties);
+      mixpanel.track(eventName, properties);
+      LogRocket.log(eventName, properties);
+      amplitude.track(eventName, properties);
     },
     [posthog],
   );
 
+  const identifyUser = useCallback(
+    (userId: string) => {
+      posthog.identify(userId);
+      mixpanel.identify(userId);
+      LogRocket.identify(userId);
+      amplitude.setUserId(userId);
+    },
+    [posthog],
+  );
+
+  const unidentifyUser = useCallback(() => {
+    posthog.reset();
+    mixpanel.reset();
+    LogRocket.startNewSession();
+    amplitude.reset();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      identifyUser(user.id);
+    } else {
+      unidentifyUser();
+    }
+  }, [user, identifyUser, unidentifyUser]);
+
   return (
-    <AnalyticsContext.Provider value={{ captureEvent }}>
-      {children}
+    <AnalyticsContext.Provider value={{ captureEvent, identifyUser }}>
+      <PostHogProvider client={posthog}>{children}</PostHogProvider>
     </AnalyticsContext.Provider>
   );
 }

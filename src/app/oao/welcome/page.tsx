@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-
+import { useAnalytics } from "@/contexts/AnalyticsContext";
 export default function WelcomePage() {
   const [isExistingCustomer, setIsExistingCustomer] = useState<string>("");
-
+  const { captureEvent } = useAnalytics();
   return (
     <div>
       {/* Header */}
@@ -96,7 +96,16 @@ export default function WelcomePage() {
       </p>
 
       {/* Action buttons */}
-      <Button className="mb-4 w-full" variant="primary" asChild>
+      <Button
+        className="mb-4 w-full"
+        variant="primary"
+        asChild
+        onClick={() =>
+          captureEvent("user_is_existing_customer", {
+            value: isExistingCustomer,
+          })
+        }
+      >
         <Link href="/oao/citizen">Continue</Link>
       </Button>
 

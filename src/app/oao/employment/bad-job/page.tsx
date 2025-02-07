@@ -1,7 +1,13 @@
+"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
+import { useAnalytics } from "@/contexts/AnalyticsContext";
+import { useEffect } from "react";
 export default function BadJobPage() {
+  const { captureEvent } = useAnalytics();
+  useEffect(() => {
+    captureEvent("user_has_bad_job");
+  }, [captureEvent]);
   return (
     <div>
       {/* Header */}

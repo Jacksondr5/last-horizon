@@ -20,6 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.11.11",
     "@clerk/nextjs": "^6.11.0",
     "@radix-ui/react-checkbox": "^1.1.3",
     "@radix-ui/react-progress": "^1.1.1",
