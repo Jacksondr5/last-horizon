@@ -1,6 +1,12 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export default clerkMiddleware({});
+const isProtectedRoute = (path: string) => {
+  return path.startsWith("/dashboard");
+};
+
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req.nextUrl.pathname)) await auth.protect();
+});
 
 export const config = {
   // TODO: Add protected routes
