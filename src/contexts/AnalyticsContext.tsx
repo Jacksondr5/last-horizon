@@ -11,8 +11,9 @@ import { PostHogProvider } from "posthog-js/react";
 import mixpanel, { type Config } from "mixpanel-browser";
 import LogRocket from "logrocket";
 import * as amplitude from "@amplitude/analytics-browser";
+import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
 import { useUser } from "@clerk/nextjs";
-import { type BrowserConfig } from "@amplitude/analytics-types";
+import { BrowserOptions } from "@amplitude/analytics-types";
 interface AnalyticsContextType {
   captureEvent: (
     eventName: string,
@@ -49,13 +50,14 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     LogRocket.init("rmdvl6/last-horizon", {
       // serverURL: `${window.location.origin}/api/logrocket`,
     });
+    const sessionReplayTracking = sessionReplayPlugin();
+    amplitude.add(sessionReplayTracking);
     amplitude.init("774e3c5338de61ff40858286506bd47d", {
-      autocapture: true,
-      // Amplitude seems to just ignore this.  No clue how to actually redirect the requests.
-      serverURL: `${window.location.origin}/api/amplitude`,
-      // Amplitude's types seem to be screwed up as well.  The docs say this is what I should use, but it's not valid.
-      // https://amplitude.com/docs/sdks/analytics/browser/browser-sdk-2#configure-the-sdk
-    } as unknown as BrowserConfig);
+      autocapture: {
+        sessions: true,
+      },
+      // serverUrl: `${window.location.origin}/api/amplitude`,
+    } satisfies BrowserOptions);
   }, []);
 
   const captureEvent = useCallback(
