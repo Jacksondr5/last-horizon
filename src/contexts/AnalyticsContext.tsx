@@ -50,12 +50,17 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     LogRocket.init("rmdvl6/last-horizon", {
       // serverURL: `${window.location.origin}/api/logrocket`,
     });
-    const sessionReplayTracking = sessionReplayPlugin();
+    const sessionReplayTracking = sessionReplayPlugin({
+      sampleRate: 1,
+      debugMode: true,
+    });
     amplitude.add(sessionReplayTracking);
     amplitude.init("774e3c5338de61ff40858286506bd47d", {
       autocapture: {
         sessions: true,
+        elementInteractions: true,
       },
+
       // serverUrl: `${window.location.origin}/api/amplitude`,
     } satisfies BrowserOptions);
   }, []);
