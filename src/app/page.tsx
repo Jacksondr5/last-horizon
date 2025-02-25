@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
+import EventButton from "@/components/event-button";
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
@@ -22,22 +21,24 @@ export default function HomePage() {
 
           {/* CTA Buttons */}
           <div className="space-y-4 sm:space-x-4 sm:space-y-0">
-            <Button
+            <EventButton
               variant="primary"
               size="lg"
               className="min-w-[200px]"
               asChild
+              eventName="open_account_click"
             >
               <Link href="/oao/welcome">Open an Account</Link>
-            </Button>
-            <Button
+            </EventButton>
+            <EventButton
               variant="outline"
               size="lg"
               className="min-w-[200px]"
               asChild
+              eventName="sign_in_click"
             >
               <Link href="/dashboard">Sign In</Link>
-            </Button>
+            </EventButton>
           </div>
 
           {/* Feature List */}

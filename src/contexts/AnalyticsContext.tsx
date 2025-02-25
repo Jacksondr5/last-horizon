@@ -11,6 +11,7 @@ import { PostHogProvider } from "posthog-js/react";
 import mixpanel, { type Config } from "mixpanel-browser";
 import LogRocket from "logrocket";
 import * as amplitude from "@amplitude/analytics-browser";
+import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
 import { useUser } from "@clerk/nextjs";
 import { type BrowserOptions } from "@amplitude/analytics-types";
 interface AnalyticsContextType {
@@ -49,8 +50,17 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     LogRocket.init("rmdvl6/last-horizon", {
       // serverURL: `${window.location.origin}/api/logrocket`,
     });
+    const sessionReplayTracking = sessionReplayPlugin({
+      sampleRate: 1,
+      debugMode: true,
+    });
+    amplitude.add(sessionReplayTracking);
     amplitude.init("774e3c5338de61ff40858286506bd47d", {
-      autocapture: true,
+      autocapture: {
+        sessions: true,
+        elementInteractions: true,
+      },
+
       // serverUrl: `${window.location.origin}/api/amplitude`,
     } satisfies BrowserOptions);
   }, []);
