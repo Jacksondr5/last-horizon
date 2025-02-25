@@ -13,7 +13,7 @@ import LogRocket from "logrocket";
 import * as amplitude from "@amplitude/analytics-browser";
 import { sessionReplayPlugin } from "@amplitude/plugin-session-replay-browser";
 import { useUser } from "@clerk/nextjs";
-import { BrowserOptions } from "@amplitude/analytics-types";
+import { type BrowserOptions } from "@amplitude/analytics-types";
 interface AnalyticsContextType {
   captureEvent: (
     eventName: string,
