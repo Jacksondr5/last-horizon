@@ -51,7 +51,6 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     });
     amplitude.init("774e3c5338de61ff40858286506bd47d", {
       autocapture: true,
-      // Amplitude seems to just ignore this.  No clue how to actually redirect the requests.
       // serverUrl: `${window.location.origin}/api/amplitude`,
     } satisfies BrowserOptions);
   }, []);
